@@ -4,9 +4,23 @@
              x:Class="VldTenshi.Timerpage">
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
+            <Label Text="Timer Page!"
                 VerticalOptions="CenterAndExpand" 
                 HorizontalOptions="CenterAndExpand" />
+            <Label x:Name="timer_start"
+                   Text="Start"
+                   FontSize="Medium"
+                   BackgroundColor="Bisque"
+                   >
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"/>
+                </Label.GestureRecognizers>
+            </Label>
+            <Button x:Name="btn_back"
+                    Text="Back"
+                    FontSize="Large"
+                    BackgroundColor="Bisque"
+                    Clicked="btn_back_Clicked"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

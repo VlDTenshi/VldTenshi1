@@ -47,15 +47,31 @@ namespace VldTenshi
             Content=st;
             //st.Children.Add(b);
         }
+        
         int i = 0;
         private void Editor_TextChanged(object sender, TextChangedEventArgs e)
         {
-            char key=e.NewTextValue?.LastOrDefault() ?? ' ';
-            if (key == 'A')
+            string newText = e.NewTextValue ?? "";
+            string oldText = e.OldTextValue ?? "";
+
+            if (newText.Length < oldText.Length) // Текст был удален
             {
-                i++;
-                label.Text=key.ToString()+": "+i.ToString();
+                char deletedChar = oldText[oldText.Length - 1];
+                if (deletedChar == 'A')
+                {
+                    i--;
+                }
             }
+            else if (newText.Length > oldText.Length) // Текст был добавлен
+            {
+                char addedChar = newText[newText.Length - 1];
+                if (addedChar == 'A')
+                {
+                    i++;
+                }
+            }
+
+            label.Text = "A: " + i.ToString();
         }
 
         private async void B_Clicked(object sender, EventArgs e)

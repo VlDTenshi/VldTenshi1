@@ -16,5 +16,15 @@ namespace VldTenshi
         {
             InitializeComponent();
         }
+
+        private async void btn_back_Clicked(object sender, EventArgs e)
+        {
+            await Navigation.PopAsync();
+        }
+
+        private void TapGestureRecognizer_Tapped(object sender, EventArgs e)
+        {
+
+        }
     }
 }
