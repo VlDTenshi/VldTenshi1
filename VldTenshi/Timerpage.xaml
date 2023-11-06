@@ -4,13 +4,16 @@
              x:Class="VldTenshi.Timerpage">
     <ContentPage.Content>
         <StackLayout>
-            <Label Text="Timer Page!"
+            <Label x:Name="timer_value"
+                Text="Timer Page!"
                 VerticalOptions="CenterAndExpand" 
                 HorizontalOptions="CenterAndExpand" />
             <Label x:Name="timer_start"
                    Text="Start"
                    FontSize="Medium"
                    BackgroundColor="Bisque"
+                   VerticalOptions="CenterAndExpand" 
+                   HorizontalOptions="CenterAndExpand"
                    >
                 <Label.GestureRecognizers>
                     <TapGestureRecognizer Tapped="TapGestureRecognizer_Tapped"/>
