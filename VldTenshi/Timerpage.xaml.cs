@@ -26,9 +26,12 @@ namespace VldTenshi
         CancellationTokenSource cts;
         private async void ShowTime()
         {
+            DateTime startTime = DateTime.Now;
+
             while (onoff)
             {
-                timer_value.Text = DateTime.Now.ToString("T");
+                TimeSpan elapsedTime = DateTime.Now - startTime;
+                timer_value.Text = elapsedTime.ToString(@"hh\:mm\:ss");
                 await Task.Delay(1000);
             }
         }
