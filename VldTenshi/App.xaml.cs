@@ -10,7 +10,7 @@ namespace VldTenshi
         {
             InitializeComponent();
 
-            MainPage = new NavigationPage( new Startpage());
+            MainPage = new NavigationPage( new StartPage1());
         }
 
         protected override void OnStart()
