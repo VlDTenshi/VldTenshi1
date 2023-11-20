@@ -13,8 +13,8 @@ namespace VldTenshi
 	
 	public partial class StartPage1 : ContentPage
 	{
-		List<ContentPage> pages = new List<ContentPage>() { new Startpage(), new BoxView_Page(), new Timerpage(), new DateTime_Page(), new StepperSlider_Page(), new TrafficLight() };
-		List<string> tekst = new List<string> { "Ava Startpage leht", "Ava BoxView leht", "Ava Timer leht", "Ava DateTime leht", "Ava StepperSlider leht", "Ava TrafficLight leht" };
+		List<ContentPage> pages = new List<ContentPage>() { new Startpage(), new BoxView_Page(), new Timerpage(), new DateTime_Page(), new StepperSlider_Page(), new TrafficLight(), new FrameGridPage(), new ImagesPage(), new HoroscopePage() };
+		List<string> tekst = new List<string> { "Ava Startpage leht", "Ava BoxView leht", "Ava Timer leht", "Ava DateTime leht", "Ava StepperSlider leht", "Ava TrafficLight leht", "Ava Grid leht", "Ava Image leht", "Ava Horoscope leht" };
 		StackLayout st;
 		public StartPage1()
 		{

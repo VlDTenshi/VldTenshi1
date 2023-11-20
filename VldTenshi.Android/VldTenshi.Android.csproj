@@ -84,13 +84,16 @@
     <AndroidResource Include="Resources\mipmap-xxxhdpi\launcher_foreground.png" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Resources\drawable\" />
+    <AndroidResource Include="Resources\drawable\scr2.jfif" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\VldTenshi\VldTenshi.csproj">
       <Project>{179FB226-CA51-465E-932E-231A9C5DF2E7}</Project>
       <Name>VldTenshi</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\scr.jfif" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
 </Project>
