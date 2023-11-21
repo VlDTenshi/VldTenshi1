@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -12,7 +13,7 @@ namespace VldTenshi
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class HoroscopePage : ContentPage
 	{
-		public HoroscopePage ()
+		public HoroscopePage()
 		{
 			InitializeComponent();
 
@@ -39,6 +40,7 @@ namespace VldTenshi
 			};
 			var zodiacImage = new Image
 			{
+				BindingContext = "Zodiac Photo: ",
 				HorizontalOptions = LayoutOptions.CenterAndExpand,
 				VerticalOptions = LayoutOptions.CenterAndExpand
 			};
@@ -91,15 +93,24 @@ namespace VldTenshi
 
 			checkZodiacButton.Clicked += (sender, e) =>
 			{
-				// Обработка нажатия кнопки
 				string enteredZodiac = zodiacEntry.Text.ToUpper();
-				DateTime dateRangeStart, dateRangeEnd;
+				// Обработка нажатия кнопки
+				if (string.IsNullOrWhiteSpace(enteredZodiac))
+				{
+					// Если значение не было введено, выведите сообщение пользователю
+					DisplayAlert("Error", "Please enter a Zodiac sign.", "OK");
+					return; // Прекратить выполнение дальнейших действий
+				}
+				else
+				{
+					DateTime dateRangeStart, dateRangeEnd;
 
-				GetZodiacDateRange(enteredZodiac, out dateRangeStart, out dateRangeEnd);
-				dateResultLabel.Text = $"Date Range: {dateRangeStart:MM/dd/yyyy} - {dateRangeEnd:MM/dd/yyyy}";
+					GetZodiacDateRange(enteredZodiac, out dateRangeStart, out dateRangeEnd);
+					dateResultLabel.Text = $"Date Range: {dateRangeStart:MM/dd/yyyy} - {dateRangeEnd:MM/dd/yyyy}";
 
-				//Отображение изображения для знака зодиака
-				DisplayZodiacImage(enteredZodiac, zodiacImage);
+					//Отображение изображения для знака зодиака
+					DisplayZodiacImage(enteredZodiac, zodiacImage);
+				}
 			};
 
 			// Создаем разметку
@@ -108,7 +119,7 @@ namespace VldTenshi
 				Padding = new Thickness(20),
 				Spacing = 10,
 				VerticalOptions = LayoutOptions.CenterAndExpand,
-				Children = { dateLabel, datePicker, resultLabel, checkButton, zodiacLabel, zodiacEntry, dateResultLabel, checkZodiacButton }
+				Children = { dateLabel, datePicker, resultLabel, checkButton, zodiacLabel, zodiacEntry, dateResultLabel, checkZodiacButton, zodiacImage }
 			};
 
 			Content = stackLayout;
@@ -117,39 +128,39 @@ namespace VldTenshi
 		}
 
 		// Метод для отображения изображения для знака зодиака
-		private void DisplayZodiacImage(string zodiac, Image zodiacImage)
+		private void DisplayZodiacImage(string enteredZodiac, Image zodiacImage)
 		{
 			// Создайте коллекцию изображений для каждого знака зодиака
 			Dictionary<string, string> zodiacImages = new Dictionary<string, string>
 		{
-			{ "ARIES", "Aries.jpg" },
-			{ "TAURUS", "Taurus.jpg" },
-			{ "GEMINI", "Gemini.jpg" },
-			{ "CANCER", "Cancer.jpg" },
-			{ "LEO", "Leo.jpg" },
-			{ "VIRGO", "Virgo.jpg" },
-			{ "LIBRA", "Libra.jpg" },
-			{ "SCORPIO", "Scorpio.jpg" },
-			{ "SAGITTARIUS", "Sagittarius.jpg" },
-			{ "CAPRICORN", "Capricorn.jpg" },
-			{ "AQUARIUS", "Aquarius.jpg" },
-			{ "PISCES", "Pisces.jpg" },
+			{ "Aries", "Aries.jpg" },
+			{ "Taurus", "Taurus.jpg" },
+			{ "Gemini", "Gemini.jpg" },
+			{ "Cancer", "Cancer.jpg" },
+			{ "Leo", "Leo.jpg" },
+			{ "Virgo", "Virgo.jpg" },
+			{ "Libra", "Libra.jpg" },
+			{ "Scorpio", "Scorpio.jpg" },
+			{ "Sagittarius", "Sagittarius.jpg" },
+			{ "Capricorn", "Capricorn.jpg" },
+			{ "Aquarius", "Aquarius.jpg" },
+			{ "Pisces", "Pisces.jpg" },
 		};
 
 			// Проверьте, есть ли изображение для данного знака зодиака
-			if (zodiacImages.ContainsKey(zodiac))
+			if (zodiacImages.ContainsKey(enteredZodiac))
 			{
 				// Отобразите изображение
-				string resourceName = zodiacImages[zodiac];
-				zodiacImage.Source = ImageSource.FromResource("VldTenshi.Resources.drawable" + resourceName + ".jpg")
+				string resourcePath = Path.Combine("VldTenshi.Resources.drawable", zodiacImages[enteredZodiac]);
+				zodiacImage.Source = ImageSource.FromResource(resourcePath);
 			}
 			else
 			{
-					// Очистите изображение, если знак зодиака не найден
-					zodiacImage.Source = null;
+				// Очистите изображение, если знак зодиака не найден
+				zodiacImage.Source = null;
 			}
 		}
-	}
+
 		// Метод для определения знака зодиака по дате
 		private string GetZodiacSign(DateTime date)
 		{
