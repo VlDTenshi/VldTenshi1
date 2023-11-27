@@ -15,7 +15,7 @@ namespace VldTenshi
 	{
 		public HoroscopePage()
 		{
-			InitializeComponent();
+			//InitializeComponent();
 
 			// Добавляем элементы на страницу
 			var dateLabel = new Label
@@ -147,19 +147,20 @@ namespace VldTenshi
 			{ "Pisces", "Pisces.jpg" },
 		};
 
-			// Проверьте, есть ли изображение для данного знака зодиака
-			if (zodiacImages.ContainsKey(enteredZodiac))
-			{
-				// Отобразите изображение
-				string resourcePath = Path.Combine("VldTenshi.Resources.drawable", zodiacImages[enteredZodiac]);
-				zodiacImage.Source = ImageSource.FromResource(resourcePath);
-			}
-			else
-			{
-				// Очистите изображение, если знак зодиака не найден
-				zodiacImage.Source = null;
-			}
-		}
+            if (!string.IsNullOrEmpty(enteredZodiac) && enteredZodiac.ToLower() != "unknown")
+            {
+                // Путь к изображению
+                string imagePath = $"VldTenshi.Resources.drawable.{enteredZodiac}.jpg";
+
+                // Устанавливаем источник изображения
+                zodiacImage.Source = ImageSource.FromResource(imagePath);
+            }
+            else
+            {
+                // Если знак зодиака не найден, очищаем изображение
+                zodiacImage.Source = null;
+            }
+        }
 
 		// Метод для определения знака зодиака по дате
 		private string GetZodiacSign(DateTime date)
