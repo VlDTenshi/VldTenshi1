@@ -19,21 +19,21 @@
                     <Frame.GestureRecognizers>
                         <TapGestureRecognizer Tapped="OnFrameTapped" />
                     </Frame.GestureRecognizers>
-                    <Label Text="Стой" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" TextColor="White" />
+                    <Label Text="Красный" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" TextColor="White" />
                 </Frame>
 
                 <Frame x:Name="YellowFrame" BackgroundColor="Gray" CornerRadius="50" HeightRequest="100" WidthRequest="100" Margin="0,10,0,0">
                     <Frame.GestureRecognizers>
                         <TapGestureRecognizer Tapped="OnFrameTapped" />
                     </Frame.GestureRecognizers>
-                    <Label Text="Готовься" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" TextColor="White" />
+                    <Label Text="Желтый" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" TextColor="White" />
                 </Frame>
 
                 <Frame x:Name="GreenFrame" BackgroundColor="Gray" CornerRadius="50" HeightRequest="100" WidthRequest="100" Margin="0,10,0,0">
                     <Frame.GestureRecognizers>
                         <TapGestureRecognizer Tapped="OnFrameTapped" />
                     </Frame.GestureRecognizers>
-                    <Label Text="Иди" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" TextColor="White" />
+                    <Label Text="Зеленый" VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand" TextColor="White" />
                 </Frame>
             </StackLayout>
         </StackLayout>

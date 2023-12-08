@@ -69,6 +69,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Assets\MyFont.ttf" />
     <None Include="Resources\AboutResources.txt" />
     <None Include="Assets\AboutAssets.txt" />
     <None Include="Properties\AndroidManifest.xml" />
@@ -102,40 +103,40 @@
     <AndroidResource Include="Resources\drawable\scr.jfif" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable\Aquarius.jpg" />
+    <EmbeddedResource Include="Resources\drawable\Aquarius.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable\Aries.jpg" />
+    <EmbeddedResource Include="Resources\drawable\Aries.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable\Cancer.jpg" />
+    <EmbeddedResource Include="Resources\drawable\Cancer.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable\Capricorn.jpg" />
+    <EmbeddedResource Include="Resources\drawable\Capricorn.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable\Gemini.jpg" />
+    <EmbeddedResource Include="Resources\drawable\Gemini.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable\Leo.jpg" />
+    <EmbeddedResource Include="Resources\drawable\Leo.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable\Libra.jpg" />
+    <EmbeddedResource Include="Resources\drawable\Libra.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable\Pisces.jpg" />
+    <EmbeddedResource Include="Resources\drawable\Pisces.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable\Sagittarius.jpg" />
+    <EmbeddedResource Include="Resources\drawable\Sagittarius.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable\Scorpio.jpg" />
+    <EmbeddedResource Include="Resources\drawable\Scorpio.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable\Taurus.jpg" />
+    <EmbeddedResource Include="Resources\drawable\Taurus.jpg" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable\Virgo.jpg" />
+    <EmbeddedResource Include="Resources\drawable\Virgo.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
 </Project>

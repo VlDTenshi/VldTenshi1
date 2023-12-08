@@ -30,7 +30,8 @@ namespace VldTenshi
 					Text = tekst[i],
 					TabIndex = i,
 					BackgroundColor = Color.Red,
-					TextColor = Color.White
+					TextColor = Color.White,
+					FontFamily = "MyFont.ttf"
 				};
 					st.Children.Add(button);
 					button.Clicked += Button_Clicked1;

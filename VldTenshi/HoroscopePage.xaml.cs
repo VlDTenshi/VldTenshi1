@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,12 +14,28 @@ namespace VldTenshi
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class HoroscopePage : ContentPage
 	{
-		public HoroscopePage()
+        //public enum ZodiacSign
+        //{
+        //    Aries,
+        //    Taurus,
+        //    Gemini,
+        //    Cancer,
+        //    Leo,
+        //    Virgo,
+        //    Libra,
+        //    Scorpio,
+        //    Sagittarius,
+        //    Capricorn,
+        //    Aquarius,
+        //    Pisces,
+        //    Unknown
+        //}
+        public HoroscopePage()
 		{
-			//InitializeComponent();
+            //InitializeComponent();
 
-			// Добавляем элементы на страницу
-			var dateLabel = new Label
+            // Добавляем элементы на страницу
+            var dateLabel = new Label
 			{
 				Text = "Enter Birthdate:",
 				HorizontalOptions = LayoutOptions.CenterAndExpand,
@@ -93,9 +110,10 @@ namespace VldTenshi
 
 			checkZodiacButton.Clicked += (sender, e) =>
 			{
-				string enteredZodiac = zodiacEntry.Text.ToUpper();
-				// Обработка нажатия кнопки
-				if (string.IsNullOrWhiteSpace(enteredZodiac))
+				string enteredZodiac = zodiacEntry.Text?.ToUpper();
+                string placeholderText = "Enter Zodiac Sign";
+                // Обработка нажатия кнопки
+                if (string.IsNullOrWhiteSpace(enteredZodiac) || enteredZodiac == placeholderText)
 				{
 					// Если значение не было введено, выведите сообщение пользователю
 					DisplayAlert("Error", "Please enter a Zodiac sign.", "OK");
@@ -111,7 +129,20 @@ namespace VldTenshi
 					//Отображение изображения для знака зодиака
 					DisplayZodiacImage(enteredZodiac, zodiacImage);
 				}
+				//if (Enum.TryParse(enteredZodiac, true, out ZodiacSign zodiacSign))
+				//{
+				//    DateTime dateRangeStart, dateRangeEnd;
+				//    GetZodiacDateRange(zodiacSign, out dateRangeStart, out dateRangeEnd);
+				//    dateResultLabel.Text = $"Date Range: {dateRangeStart:MM/dd/yyyy} - {dateRangeEnd:MM/dd/yyyy}";
+
+				//    DisplayZodiacImage(zodiacSign, zodiacImage);
+				//}
+				//else
+				//{
+				//    DisplayAlert("Error", "Please enter a valid Zodiac sign.", "OK");
+				//}
 			};
+
 
 			// Создаем разметку
 			var stackLayout = new StackLayout
@@ -125,72 +156,95 @@ namespace VldTenshi
 			Content = stackLayout;
 			// Добавляем кнопку возврата в верхний тулбар
 			ToolbarItems.Add(new ToolbarItem("Back", null, async () => await Navigation.PopAsync()));
+
 		}
 
-		// Метод для отображения изображения для знака зодиака
+		//Метод для отображения изображения для знака зодиака
 		private void DisplayZodiacImage(string enteredZodiac, Image zodiacImage)
 		{
-			// Создайте коллекцию изображений для каждого знака зодиака
-			Dictionary<string, string> zodiacImages = new Dictionary<string, string>
-		{
-			{ "Aries", "Aries.jpg" },
-			{ "Taurus", "Taurus.jpg" },
-			{ "Gemini", "Gemini.jpg" },
-			{ "Cancer", "Cancer.jpg" },
-			{ "Leo", "Leo.jpg" },
-			{ "Virgo", "Virgo.jpg" },
-			{ "Libra", "Libra.jpg" },
-			{ "Scorpio", "Scorpio.jpg" },
-			{ "Sagittarius", "Sagittarius.jpg" },
-			{ "Capricorn", "Capricorn.jpg" },
-			{ "Aquarius", "Aquarius.jpg" },
-			{ "Pisces", "Pisces.jpg" },
-		};
-
+            // Создаём коллекцию изображений для каждого знака зодиака
+            Dictionary<string, string> zodiacImages = new Dictionary<string, string>
+        {
+            { "Aries", "Aries.jpg" },
+            { "Taurus", "Taurus.jpg" },
+            { "Gemini", "Gemini.jpg" },
+            { "Cancer", "Cancer.jpg" },
+            { "Leo", "Leo.jpg" },
+            { "Virgo", "Virgo.jpg" },
+            { "Libra", "Libra.jpg" },
+            { "Scorpio", "Scorpio.jpg" },
+            { "Sagittarius", "Sagittarius.jpg" },
+            { "Capricorn", "Capricorn.jpg" },
+            { "Aquarius", "Aquarius.jpg" },
+            { "Pisces", "Pisces.jpg" },
+        };
             if (!string.IsNullOrEmpty(enteredZodiac) && enteredZodiac.ToLower() != "unknown")
-            {
-                // Путь к изображению
-                string imagePath = $"VldTenshi.Resources.drawable.{enteredZodiac}.jpg";
+			{
+				if(zodiacImages.TryGetValue(enteredZodiac, out string imageName)) 
+				{
+					// Путь к изображению
+					string imagePath = $"VldTenshi.Resources.drawable.{imageName}";
 
-                // Устанавливаем источник изображения
-                zodiacImage.Source = ImageSource.FromResource(imagePath);
+					// Устанавливаем источник изображения
+					zodiacImage.Source = ImageSource.FromResource(imagePath, typeof(HoroscopePage).GetTypeInfo().Assembly);
+				}
+				else
+                {
+                        // Если знак зодиака не найден, очищаем изображение
+                        zodiacImage.Source = null;
+                }
             }
+
             else
-            {
-                // Если знак зодиака не найден, очищаем изображение
-                zodiacImage.Source = null;
-            }
-        }
+			{
+				// Если знак зодиака не найден, очищаем изображение
+				zodiacImage.Source = null;
+			}
+		}
+		//private void DisplayZodiacImage(ZodiacSign zodiac, Image zodiacImage)
+  //      {
+  //          if (zodiac != ZodiacSign.Unknown)
+  //          {
+  //              string zodiacName = zodiac.ToString();
+  //              string imagePath = $"VldTenshi.Resources.drawable.{zodiacName}.jpg";
 
-		// Метод для определения знака зодиака по дате
-		private string GetZodiacSign(DateTime date)
+  //              zodiacImage.Source = ImageSource.FromResource(imagePath, typeof(HoroscopePage).GetTypeInfo().Assembly);
+  //          }
+  //          else
+  //          {
+  //              zodiacImage.Source = null;
+  //          }
+  //      }
+
+        // Метод для определения знака зодиака по дате
+        private /*ZodiacSign*/ string GetZodiacSign(DateTime date)
 		{
 			if ((date.Month == 3 && date.Day >= 21) || (date.Month == 4 && date.Day <= 19))
-				return "Aries";
+				return /*ZodiacSign.*/"Aries";
 			else if ((date.Month == 4 && date.Day >= 20) || (date.Month == 5 && date.Day <= 20))
-				return "Taurus";
+				return /*ZodiacSign.*/"Taurus";
 			else if ((date.Month == 5 && date.Day >= 21) || (date.Month == 6 && date.Day <= 20))
-				return "Gemini";
+				return /*ZodiacSign.*/"Gemini";
 			else if ((date.Month == 6 && date.Day >= 21) || (date.Month == 7 && date.Day <= 22))
-				return "Cancer";
+				return /*ZodiacSign.*/"Cancer";
 			else if ((date.Month == 7 && date.Day >= 23) || (date.Month == 8 && date.Day <= 22))
-				return "Leo";
+				return /*ZodiacSign.*/"Leo";
 			else if ((date.Month == 8 && date.Day >= 23) || (date.Month == 9 && date.Day <= 22))
-				return "Virgo";
+				return /*ZodiacSign.*/"Virgo";
 			else if ((date.Month == 9 && date.Day >= 23) || (date.Month == 10 && date.Day <= 22))
-				return "Libra";
+				return /*ZodiacSign.*/"Libra";
 			else if ((date.Month == 10 && date.Day >= 23) || (date.Month == 11 && date.Day <= 21))
-				return "Scorpio";
+				return /*ZodiacSign.*/"Scorpio";
 			else if ((date.Month == 11 && date.Day >= 22) || (date.Month == 12 && date.Day <= 21))
-				return "Sagittarius";
+				return /*ZodiacSign.*/"Sagittarius";
 			else if ((date.Month == 12 && date.Day >= 22) || (date.Month == 1 && date.Day <= 19))
-				return "Capricorn";
+				return /*ZodiacSign.*/"Capricorn";
 			else if ((date.Month == 1 && date.Day >= 20) || (date.Month == 2 && date.Day <= 18))
-				return "Aquarius";
+				return /*ZodiacSign.*/"Aquarius";
 			else if ((date.Month == 2 && date.Day >= 19) || (date.Month == 3 && date.Day <= 20))
-				return "Pisces";
+				return /*ZodiacSign.*/"Pisces";
 			else
-				return "Unknown";
+				return /*ZodiacSign.*/"Unknown";
 		}
 
 		// Метод для определения промежутка времени по знаку зодиака
