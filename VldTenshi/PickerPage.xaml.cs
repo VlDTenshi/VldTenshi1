@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using Rg.Plugins.Popup.Services;
+using Xamarin.Essentials;
 
 namespace VldTenshi
 {
@@ -142,15 +143,42 @@ namespace VldTenshi
             Array.Resize(ref lehed, lehed.Length + 1);
             lehed[lehed.Length - 1] = enteredUrl;
 
-            // Обновление Picker
-            picker.Items.Add("Custom");
-            picker.SelectedIndex = picker.Items.Count - 1;
+			// Сохранение списка URL в Preferences
+			Preferences.Set("SavedUrls", string.Join(",", lehed));
+
+			// Обновление Picker
+			picker.Items.Add("Custom");
+			foreach (var url in lehed)
+			{
+				picker.Items.Add(url);
+			}
+			picker.SelectedIndex = picker.Items.Count - 1;
             currentPageIndex = picker.SelectedIndex;
             webView.Source = new UrlWebViewSource { Url = enteredUrl };
         }
+		protected override void OnAppearing()
+		{
+			base.OnAppearing();
 
-        //int ind=0;
-        private void Swipe_Swiped(object sender, SwipedEventArgs e)
+			// Извлекаем сохраненный список URL из Preferences
+			string savedUrls = Preferences.Get("SavedUrls", "");
+
+			if (!string.IsNullOrEmpty(savedUrls))
+			{
+				lehed = savedUrls.Split(',');
+
+				// Очищаем и обновляем элементы Picker
+				picker.Items.Clear();
+				picker.Items.Add("Custom");
+				foreach (var url in lehed)
+				{
+					picker.Items.Add(url);
+				}
+			}
+		}
+
+		//int ind=0;
+		private void Swipe_Swiped(object sender, SwipedEventArgs e)
         {
             currentPageIndex = (currentPageIndex + 1) % lehed.Length;
             webView.Source = new UrlWebViewSource { Url = lehed[currentPageIndex] };
