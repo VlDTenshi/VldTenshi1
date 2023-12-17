@@ -14,28 +14,17 @@ namespace VldTenshi
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class HoroscopePage : ContentPage
 	{
-        //public enum ZodiacSign
-        //{
-        //    Aries,
-        //    Taurus,
-        //    Gemini,
-        //    Cancer,
-        //    Leo,
-        //    Virgo,
-        //    Libra,
-        //    Scorpio,
-        //    Sagittarius,
-        //    Capricorn,
-        //    Aquarius,
-        //    Pisces,
-        //    Unknown
-        //}
-        public HoroscopePage()
-		{
-            //InitializeComponent();
+		Label resultLabel;
+		Image zodiacImage;
+		Label zodiacDescriptionLabel;
+		
 
-            // Добавляем элементы на страницу
-            var dateLabel = new Label
+		public HoroscopePage()
+		{
+			//InitializeComponent();
+
+			// Добавляем элементы на страницу
+			var dateLabel = new Label
 			{
 				Text = "Enter Birthdate:",
 				HorizontalOptions = LayoutOptions.CenterAndExpand,
@@ -49,15 +38,15 @@ namespace VldTenshi
 				VerticalOptions = LayoutOptions.CenterAndExpand,
 			};
 
-			var resultLabel = new Label
+			resultLabel = new Label
 			{
 				Text = "Zodiac Sign: ",
 				HorizontalOptions = LayoutOptions.CenterAndExpand,
 				VerticalOptions = LayoutOptions.CenterAndExpand
 			};
-			var zodiacImage = new Image
+
+			zodiacImage = new Image
 			{
-				BindingContext = "Zodiac Photo: ",
 				HorizontalOptions = LayoutOptions.CenterAndExpand,
 				VerticalOptions = LayoutOptions.CenterAndExpand
 			};
@@ -68,16 +57,17 @@ namespace VldTenshi
 				HorizontalOptions = LayoutOptions.CenterAndExpand,
 				VerticalOptions = LayoutOptions.CenterAndExpand
 			};
-
+			zodiacDescriptionLabel = new Label();
 			checkButton.Clicked += (sender, e) =>
 			{
-				// Обработка нажатия кнопки
-				DateTime selectedDate = datePicker.Date;
-
-				string zodiacSign = GetZodiacSign(selectedDate);
-				resultLabel.Text = "Zodiac Sign: " + zodiacSign;
-
-				DisplayZodiacImage(zodiacSign, zodiacImage);
+				ShowHoroscope(datePicker.Date);
+			};
+			var stackLayout = new StackLayout
+			{
+				Padding = new Thickness(20),
+				Spacing = 10,
+				VerticalOptions = LayoutOptions.CenterAndExpand,
+				Children = { dateLabel, datePicker, resultLabel, checkButton, zodiacImage, zodiacDescriptionLabel }
 			};
 
 			var zodiacLabel = new Label
@@ -111,9 +101,9 @@ namespace VldTenshi
 			checkZodiacButton.Clicked += (sender, e) =>
 			{
 				string enteredZodiac = zodiacEntry.Text?.ToUpper();
-                string placeholderText = "Enter Zodiac Sign";
-                // Обработка нажатия кнопки
-                if (string.IsNullOrWhiteSpace(enteredZodiac) || enteredZodiac == placeholderText)
+				string placeholderText = "Enter Zodiac Sign";
+				// Обработка нажатия кнопки
+				if (string.IsNullOrWhiteSpace(enteredZodiac) || enteredZodiac == placeholderText)
 				{
 					// Если значение не было введено, выведите сообщение пользователю
 					DisplayAlert("Error", "Please enter a Zodiac sign.", "OK");
@@ -126,125 +116,75 @@ namespace VldTenshi
 					GetZodiacDateRange(enteredZodiac, out dateRangeStart, out dateRangeEnd);
 					dateResultLabel.Text = $"Date Range: {dateRangeStart:MM/dd/yyyy} - {dateRangeEnd:MM/dd/yyyy}";
 
-					//Отображение изображения для знака зодиака
-					DisplayZodiacImage(enteredZodiac, zodiacImage);
 				}
-				//if (Enum.TryParse(enteredZodiac, true, out ZodiacSign zodiacSign))
-				//{
-				//    DateTime dateRangeStart, dateRangeEnd;
-				//    GetZodiacDateRange(zodiacSign, out dateRangeStart, out dateRangeEnd);
-				//    dateResultLabel.Text = $"Date Range: {dateRangeStart:MM/dd/yyyy} - {dateRangeEnd:MM/dd/yyyy}";
-
-				//    DisplayZodiacImage(zodiacSign, zodiacImage);
-				//}
-				//else
-				//{
-				//    DisplayAlert("Error", "Please enter a valid Zodiac sign.", "OK");
-				//}
 			};
 
-
 			// Создаем разметку
-			var stackLayout = new StackLayout
+			var stackLayout1 = new StackLayout
 			{
 				Padding = new Thickness(20),
 				Spacing = 10,
 				VerticalOptions = LayoutOptions.CenterAndExpand,
-				Children = { dateLabel, datePicker, resultLabel, checkButton, zodiacLabel, zodiacEntry, dateResultLabel, checkZodiacButton, zodiacImage }
+				Children = { zodiacLabel, zodiacEntry, dateResultLabel, checkZodiacButton, zodiacImage, zodiacDescriptionLabel }
 			};
-
-			Content = stackLayout;
+			var mainStackLayout = new StackLayout
+			{
+				Spacing = 10,
+				VerticalOptions = LayoutOptions.CenterAndExpand,
+				Children = { stackLayout, stackLayout1 }
+			};
+			
+			Content = mainStackLayout;
 			// Добавляем кнопку возврата в верхний тулбар
 			ToolbarItems.Add(new ToolbarItem("Back", null, async () => await Navigation.PopAsync()));
-
 		}
 
-		//Метод для отображения изображения для знака зодиака
-		private void DisplayZodiacImage(string enteredZodiac, Image zodiacImage)
+		// Метод для отображения изображения для знака зодиака
+		private void ShowHoroscope(DateTime date)
 		{
-            // Создаём коллекцию изображений для каждого знака зодиака
-            Dictionary<string, string> zodiacImages = new Dictionary<string, string>
-        {
-            { "Aries", "Aries.jpg" },
-            { "Taurus", "Taurus.jpg" },
-            { "Gemini", "Gemini.jpg" },
-            { "Cancer", "Cancer.jpg" },
-            { "Leo", "Leo.jpg" },
-            { "Virgo", "Virgo.jpg" },
-            { "Libra", "Libra.jpg" },
-            { "Scorpio", "Scorpio.jpg" },
-            { "Sagittarius", "Sagittarius.jpg" },
-            { "Capricorn", "Capricorn.jpg" },
-            { "Aquarius", "Aquarius.jpg" },
-            { "Pisces", "Pisces.jpg" },
-        };
-            if (!string.IsNullOrEmpty(enteredZodiac) && enteredZodiac.ToLower() != "unknown")
-			{
-				if(zodiacImages.TryGetValue(enteredZodiac, out string imageName)) 
-				{
-					// Путь к изображению
-					string imagePath = $"VldTenshi.Resources.drawable.{imageName}";
 
-					// Устанавливаем источник изображения
-					zodiacImage.Source = ImageSource.FromResource(imagePath, typeof(HoroscopePage).GetTypeInfo().Assembly);
-				}
-				else
-                {
-                        // Если знак зодиака не найден, очищаем изображение
-                        zodiacImage.Source = null;
-                }
-            }
+			string zodiacSign = GetZodiacSign(date);
 
-            else
-			{
-				// Если знак зодиака не найден, очищаем изображение
-				zodiacImage.Source = null;
-			}
+
+			resultLabel.Text = $"Your zodiac sign is {zodiacSign}.";
+
+
+			DisplayZodiacInfo(zodiacSign);
+
+
+			zodiacDescriptionLabel.FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label));
 		}
-		//private void DisplayZodiacImage(ZodiacSign zodiac, Image zodiacImage)
-  //      {
-  //          if (zodiac != ZodiacSign.Unknown)
-  //          {
-  //              string zodiacName = zodiac.ToString();
-  //              string imagePath = $"VldTenshi.Resources.drawable.{zodiacName}.jpg";
 
-  //              zodiacImage.Source = ImageSource.FromResource(imagePath, typeof(HoroscopePage).GetTypeInfo().Assembly);
-  //          }
-  //          else
-  //          {
-  //              zodiacImage.Source = null;
-  //          }
-  //      }
 
-        // Метод для определения знака зодиака по дате
-        private /*ZodiacSign*/ string GetZodiacSign(DateTime date)
+		// Метод для определения знака зодиака по дате
+		private string GetZodiacSign(DateTime date)
 		{
 			if ((date.Month == 3 && date.Day >= 21) || (date.Month == 4 && date.Day <= 19))
-				return /*ZodiacSign.*/"Aries";
+				return "Aries";
 			else if ((date.Month == 4 && date.Day >= 20) || (date.Month == 5 && date.Day <= 20))
-				return /*ZodiacSign.*/"Taurus";
+				return "Taurus";
 			else if ((date.Month == 5 && date.Day >= 21) || (date.Month == 6 && date.Day <= 20))
-				return /*ZodiacSign.*/"Gemini";
+				return "Gemini";
 			else if ((date.Month == 6 && date.Day >= 21) || (date.Month == 7 && date.Day <= 22))
-				return /*ZodiacSign.*/"Cancer";
+				return "Cancer";
 			else if ((date.Month == 7 && date.Day >= 23) || (date.Month == 8 && date.Day <= 22))
-				return /*ZodiacSign.*/"Leo";
+				return "Leo";
 			else if ((date.Month == 8 && date.Day >= 23) || (date.Month == 9 && date.Day <= 22))
-				return /*ZodiacSign.*/"Virgo";
+				return "Virgo";
 			else if ((date.Month == 9 && date.Day >= 23) || (date.Month == 10 && date.Day <= 22))
-				return /*ZodiacSign.*/"Libra";
+				return "Libra";
 			else if ((date.Month == 10 && date.Day >= 23) || (date.Month == 11 && date.Day <= 21))
-				return /*ZodiacSign.*/"Scorpio";
+				return "Scorpio";
 			else if ((date.Month == 11 && date.Day >= 22) || (date.Month == 12 && date.Day <= 21))
-				return /*ZodiacSign.*/"Sagittarius";
+				return "Sagittarius";
 			else if ((date.Month == 12 && date.Day >= 22) || (date.Month == 1 && date.Day <= 19))
-				return /*ZodiacSign.*/"Capricorn";
+				return "Capricorn";
 			else if ((date.Month == 1 && date.Day >= 20) || (date.Month == 2 && date.Day <= 18))
-				return /*ZodiacSign.*/"Aquarius";
+				return "Aquarius";
 			else if ((date.Month == 2 && date.Day >= 19) || (date.Month == 3 && date.Day <= 20))
-				return /*ZodiacSign.*/"Pisces";
+				return "Pisces";
 			else
-				return /*ZodiacSign.*/"Unknown";
+				return "Unknown";
 		}
 
 		// Метод для определения промежутка времени по знаку зодиака
@@ -304,6 +244,95 @@ namespace VldTenshi
 				default:
 					startDate = DateTime.MinValue;
 					endDate = DateTime.MinValue;
+					break;
+			}
+		}
+		private void DisplayZodiacInfo(string zodiacSign)
+		{
+
+			switch (zodiacSign.ToLower())
+			{
+				case "aries":
+					zodiacImage.Source = "Aries.jpg";
+					zodiacDescriptionLabel.Text = " людей, родившихся под знаком Овна, характер непростой. Их целеустремлённость однобока — её хватает ненадолго: " +
+						"они быстро увлекаются и настолько же быстро теряют интерес. Часто это становится причиной развития не вполне позитивных сценариев их жизни — " +
+						"участие в сомнительных сделках, погружение в рискованные профессии.";
+					break;
+				case "taurus":
+					zodiacImage.Source = "Taurus.jpg";
+					zodiacDescriptionLabel.Text = "У родившихся под покровительством Тельца характер, несмотря на всё упорство, описанное выше, отличается пассивностью. " +
+						"Да, он готов работать до седьмого и далее пота. Но активно искать каких-то дополнительных " +
+						" возможностей он не станет, а просто продолжит уверенно заниматься своим делом. ";
+					break;
+				case "gemini":
+					zodiacImage.Source = "Gemini.jpg";
+					zodiacDescriptionLabel.Text = "Близнецы — самый многогранный знак зодиака с рядом выдающихся качеств, которые окружающими не всегда воспринимаются верно." +
+						" Это очень тонкие, сложные и интересные люди. Их можно познавать всю жизнь и всякий раз открывать что-то новое.  " +
+						"Характер их легок и интересен. Они логичны, интеллектуальны, коммуникативны, позитивны, легки в жизни и общении, а еще имеют энциклопедический склад ума.";
+					break;
+				case "cancer":
+					zodiacImage.Source = "Cancer.jpg";
+					zodiacDescriptionLabel.Text = "Раки поражают глубиной и красотой своего внутреннего мира." +
+						"Раки не склонны к открытому противостоянию, стараются сгладить острые углы и не допустить конфликта.  " +
+						"Но если прижать к стенке, то будут ожесточенно бороться. Представителям этого знака бывает довольно сложно делиться своими эмоциями и переживаниями с другими людьми. ";
+					break;
+				case "leo":
+					zodiacImage.Source = "Leo.jpg";
+					zodiacDescriptionLabel.Text = "У Львов есть склонность к управлению — это сильные личности, настроенные на завоевание мира. " +
+						"Лев стремится к вершине успеха и достигает ее потому, что знает, чего хочет.   " +
+						"Его характер настолько непредсказуем, насколько и силен. Знак невероятно обаятельный, яркий, любящий внимание. ";
+					break;
+				case "virgo":
+					zodiacImage.Source = "Virgo.jpg";
+					zodiacDescriptionLabel.Text = "Не бойтесь довериться Деве — представитель знака всегда поддержит и встанет на вашу сторону, если что-то пойдет не так. " +
+						"Дева — настоящий реалист. Она смотрит на жизнь так, что та иногда кажется ей немного страшной.  " +
+						"Но при этом Дева не боится брать ответственность, умеет управляться с деньгами и знает им цену. ";
+					break;
+				case "libra":
+					zodiacImage.Source = "Libro.jpg";
+					zodiacDescriptionLabel.Text = "Рожденные под покровительство Венеры Весы — утонченные эстеты, творцы, обладатели особого взгляда на мир. " +
+						"Они спокойны, рассудительны, дипломатичны, обладают острым чувством справедливости. " +
+						"Это один из самых комфортных в общении знаков зодиака. Весам часто не хватает уверенности в себе и решительности..";
+					break;
+				case "scorpio":
+					zodiacImage.Source = "Scorpio.jpg";
+					zodiacDescriptionLabel.Text = "Человек, рожденный под знаком Скорпиона, сочетает в себе противоречивые черты. Он может быть сдержанным в проявлении чувств и даже казаться холодным, но в душе это очень эмоциональный человек." +
+						"н прямолинеен, умен, не лезет за словом в карман. " +
+						" Обладает невероятной стойкостью, с достоинством выдерживает любые испытания и идет к цели несмотря ни на что. Честолюбив и амбициозен. ";
+					break;
+
+				case "sagittarius":
+					zodiacImage.Source = "Sagittarius.jpg";
+					zodiacDescriptionLabel.Text = "Огненная стихия оказывает сильное воздействие на характер Стрельца. " +
+						"ти излучающие оптимизм люди заряжают окружающих своей энергией. " +
+						" Стрельцы прекрасно проявляют себя на ниве преподавательской деятельности, но могут с успехом податься и в политику.";
+					break;
+				case "capricorn":
+					zodiacImage.Source = "Capricorn.jpg";
+					zodiacDescriptionLabel.Text = "Они выделяются амбициозностью и стойкостью. Козероги стараются избегать двусмысленных ситуаций и прямых конфликтов. " +
+						" Такая позиция помогает им обходиться в жизни без явных врагов. Козероги предпочитают все держать в себе: не делиться душевным состоянием с окружающими, также как и не высказывать открыто негатив. " +
+						" Внешне они спокойные, немногословные, отстраненные. Как никто, умеют совладать с эмоциями и подчинять их логике и разуму. ";
+					break;
+				case "aquarius":
+					zodiacImage.Source = "Aquarius.jpg";
+					zodiacDescriptionLabel.Text = "Водолей — реалист, который стремится изменить мир к лучшему. " +
+						" В нем всегда бурлит творческая энергия, гениальные мысли, планы и задумки." +
+						"При этом Водолей никогда не остановится на половине пути к намеченной цели и всегда будет идти до победного конца. ";
+					break;
+				case "pisces":
+					zodiacImage.Source = "Pisces.jpg";
+					zodiacDescriptionLabel.Text = "Рыбы — утончённые натуры, отличающиеся чувственностью и проницательностью. " +
+						" Они всегда готовы прийти на помощь и поддержать в трудную минуту. Иногда отзывчивость делает их жертвами манипуляторов, " +
+						" но благодаря врождённой интуиции удаётся обернуть ситуацию в свою пользу, взяв всё под контроль.";
+					break;
+
+
+
+
+				default:
+					zodiacImage.Source = null;
+					zodiacDescriptionLabel.Text = "No information available for this zodiac sign.";
+
 					break;
 			}
 		}
