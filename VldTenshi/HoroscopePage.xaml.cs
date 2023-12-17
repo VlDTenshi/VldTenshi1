@@ -45,11 +45,7 @@ namespace VldTenshi
 				VerticalOptions = LayoutOptions.CenterAndExpand
 			};
 
-			zodiacImage = new Image
-			{
-				HorizontalOptions = LayoutOptions.CenterAndExpand,
-				VerticalOptions = LayoutOptions.CenterAndExpand
-			};
+			zodiacImage = new Image();
 
 			var checkButton = new Button
 			{
@@ -115,6 +111,8 @@ namespace VldTenshi
 
 					GetZodiacDateRange(enteredZodiac, out dateRangeStart, out dateRangeEnd);
 					dateResultLabel.Text = $"Date Range: {dateRangeStart:MM/dd/yyyy} - {dateRangeEnd:MM/dd/yyyy}";
+
+					ShowHoroscope(datePicker.Date);
 
 				}
 			};
@@ -253,7 +251,7 @@ namespace VldTenshi
 			switch (zodiacSign.ToLower())
 			{
 				case "aries":
-					zodiacImage.Source = "Aries.jpg";
+					zodiacImage.Source = ImageSource.FromFile("drawable/Aries.jpg");
 					zodiacDescriptionLabel.Text = " людей, родившихся под знаком Овна, характер непростой. Их целеустремлённость однобока — её хватает ненадолго: " +
 						"они быстро увлекаются и настолько же быстро теряют интерес. Часто это становится причиной развития не вполне позитивных сценариев их жизни — " +
 						"участие в сомнительных сделках, погружение в рискованные профессии.";
