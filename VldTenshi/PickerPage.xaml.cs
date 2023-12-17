@@ -23,8 +23,9 @@ namespace VldTenshi
         Entry addressEntry;
         string[] lehed = new string[4] { "https://moodle.edu.ee", "https://www.tthk.ee/", "https://tahvel.edu.ee/#/", "https://mail.google.com/" };
         int currentPageIndex = 0;
-        public PickerPage()
+        public PickerPage() :base()
         {
+            InitializeComponent();
             picker = new Picker
             {
                 Title ="Lehed"
